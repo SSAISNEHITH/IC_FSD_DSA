@@ -1,0 +1,155 @@
+array list 
+
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+      ArrayList<Integer> num = new ArrayList<>();
+      num.add(10);
+      num.add(20);
+      System.out.println(num);
+      num.remove(0);
+      System.out.println(num);
+    }
+}
+
+
+Linked list 
+
+import java.util.LinkedList;
+class Main{
+  public static void main(String [] args){
+    LinkedList<String> ll = new LinkedList<>();
+    ll.add("sai");
+    ll.add("pranay");
+    ll.add("siddi");
+    System.out.println(ll);
+    ll.addFirst("Snehith");
+    ll.addLast("Reddy");
+    System.out.println(ll);
+    ll.removeFirst();
+    ll.removeLast();
+    System.out.println(ll);
+  }
+}
+
+
+HashSet
+
+
+import java.util.HashSet;
+class Main{
+  public static void main(String [] args){
+    HashSet<String> ll = new HashSet<>();
+    ll.add("sai");
+    ll.add("pranay");
+    ll.add("siddi");
+    System.out.println(ll);
+    ll.add("Snehith");
+    ll.add("Reddy");
+    System.out.println(ll);
+  }
+}
+
+
+
+TreeSet
+
+
+import java.util.TreeSet;
+class Main{
+  public static void main(String [] args){
+    TreeSet<String> ll = new TreeSet<>();
+    ll.add("sai");
+    ll.add("pranay");
+    ll.add("siddi");
+    System.out.println(ll);
+    ll.add("Snehith");
+    ll.add("Reddy");
+    System.out.println(ll);
+  }
+}
+
+
+LinkedHashSet
+
+import java.util.LinkedHashSet;
+class Main{
+  public static void main(String [] args){
+    LinkedHashSet<String> ll = new LinkedHashSet<>();
+    ll.add("sai");
+    ll.add("pranay");
+    ll.add("siddi");
+    System.out.println(ll);
+    ll.add("Snehith");
+    ll.addLast("Reddy");
+    System.out.println(ll);
+    ll.removeLast();
+    ll.removeFirst();
+    System.out.println(ll);
+  }
+}
+
+
+HashMap
+
+import java.util.HashMap;
+class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> map = new HashMap<>();
+        map.put(1, "sai");
+        map.put(2, "pranay");
+        map.put(3, "siddi");
+        System.out.println(map);
+        map.put(4, "Snehith");
+        map.put(5, "Reddy");
+        map.putIfAbsent(3, "DuplicateIgnored");
+        System.out.println(map);
+        map.remove(1);
+        map.remove(5);
+        System.out.println(map);
+    }
+}
+
+tree map
+
+import java.util.TreeMap;
+class Main {
+    public static void main(String[] args) {
+        TreeMap<Integer, String> map = new TreeMap<>();
+        map.put(3, "siddi");
+        map.put(1, "sai");
+        map.put(5, "Reddy");
+        System.out.println(map);
+
+        map.put(2, "pranay");
+        map.put(4, "Snehith");
+        System.out.println(map);
+
+        System.out.println("First key: " + map.firstKey() + ", Last key: " + map.lastKey());
+        map.remove(1);
+        map.remove(2);
+        System.out.println(map);
+    }
+}
+
+
+linked hash map
+
+import java.util.LinkedHashMap;
+class Main {
+    public static void main(String[] args) {
+        LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+        map.put(1, "sai");
+        map.put(2, "pranay");
+        map.put(3, "siddi");
+        System.out.println(map);
+        map.put(4, "Snehith");
+        map.putLast(5, "Reddy");
+        System.out.println(map);
+        map.remove(1);
+        map.remove(2);
+        System.out.println(map);
+    }
+}
