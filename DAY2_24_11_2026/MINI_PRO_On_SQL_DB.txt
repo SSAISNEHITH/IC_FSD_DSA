@@ -1,0 +1,1532 @@
+1.
+USE shopping_management;
+SHOW DATABASES;
+
+Database
+classicmodels
+college
+college_management
+companydb
+computer
+demo
+food
+forms
+information_schema
+jwt
+jwt_db
+login_schema
+mtieat
+mysql
+performance_schema
+perfume_store
+rest
+restdb
+shopping_management
+stud_db
+student
+sys
+
+2.
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    stock_quantity INT DEFAULT 0,
+    supplier VARCHAR(100),
+    created_date DATE,
+    CHECK (price > 0),
+    CHECK (stock_quantity >= 0)
+);
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    city VARCHAR(50),
+    age INT,
+    registration_date DATE,
+    CHECK (age >= 18)
+);
+
+CREATE TABLE sales (
+    sale_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    payment_mode VARCHAR(30) DEFAULT 'Cash',
+    sale_date DATE,
+    CHECK (quantity > 0),
+    CHECK (total_amount >= 0),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+SHOW TABLES;
+
+Tables_in_shopping_management
+customers
+products
+sales
+
+3.
+DESC products;
+
+Field	Type	Null	Key	Default	Extra
+product_id	int	NO	PRI	NULL	
+product_name	varchar(100)	NO		NULL	
+category	varchar(50)	NO		NULL	
+price	decimal(10,2)	NO		NULL	
+stock_quantity	int	YES		0	
+supplier	varchar(100)	YES		NULL	
+created_date	date	YES		NULL	
+
+DESC customers;
+
+Field	Type	Null	Key	Default	Extra
+customer_id	int	NO	PRI	NULL	
+customer_name	varchar(100)	NO		NULL	
+email	varchar(100)	NO	UNI	NULL	
+city	varchar(50)	YES		NULL	
+age	int	YES		NULL	
+registration_date	date	YES		NULL	
+
+DESC sales;
+
+Field	Type	Null	Key	Default	Extra
+sale_id	int	NO	PRI	NULL	
+customer_id	int	NO	MUL	NULL	
+product_id	int	NO	MUL	NULL	
+quantity	int	NO		NULL	
+total_amount	decimal(10,2)	NO		NULL	
+payment_mode	varchar(30)	YES		Cash	
+sale_date	date	YES		NULL	
+
+4.
+INSERT INTO products
+VALUES
+(1, 'Samsung Galaxy Phone', 'Electronics', 25000, 20, 'Samsung Tech', '2025-01-10'),
+(2, 'Dell Laptop', 'Electronics', 55000, 8, 'Dell Technologies', '2025-01-12'),
+(3, 'Apple iPhone', 'Electronics', 75000, 15, 'Apple Tech', '2025-01-15'),
+(4, 'Wooden Chair', 'Furniture', 2500, 30, 'Modern Furniture', '2025-01-18'),
+(5, 'Office Table', 'Furniture', 8000, 12, 'Home Furniture', '2025-01-20'),
+(6, 'Cotton Shirt', 'Clothing', 1200, 50, 'Fashion House', '2025-01-22'),
+(7, 'Running Shoes', 'Footwear', 3500, 25, 'Nike Tech', '2025-01-25'),
+(8, 'Smart Watch', 'Electronics', 12000, 6, 'Smart Tech', '2025-02-01'),
+(9, 'Bluetooth Speaker', 'Electronics', 4500, 18, 'Sony Tech', '2025-02-05'),
+(10, 'Leather Bag', 'Accessories', 2800, 40, 'Leather World', '2025-02-08'),
+(11, 'Washing Machine', 'Electronics', 32000, 5, 'LG Technologies', '2025-02-10'),
+(12, 'Study Table', 'Furniture', 6000, 14, 'Modern Furniture', '2025-02-12'),
+(13, 'Winter Jacket', 'Clothing', 4000, 22, 'Fashion House', '2025-02-15'),
+(14, 'Gaming Mouse', 'Electronics', 1800, 35, 'Logitech Tech', '2025-02-18'),
+(15, 'Water Bottle', 'Accessories', 500, 60, 'Aqua Products', '2025-02-20');
+
+INSERT INTO customers VALUES
+(1, 'Arun Kumar', 'arun@gmail.com', 'Bangalore', 24, '2026-01-01'),
+(2, 'Anjali Sharma', 'anjali@gmail.com', 'Chennai', 25, '2026-01-02'),
+(3, 'Rahul Reddy', 'rahul@gmail.com', 'Mysore', 22, '2026-01-03'),
+(4, 'Priya Singh', 'priya@gmail.com', 'Hyderabad', 27, '2026-01-04'),
+(5, 'Kiran Kumar', 'kiran@gmail.com', 'Vijayawada', 23, '2026-01-05'),
+(6, 'Sneha Rao', 'sneha@gmail.com', 'Bangalore', 26, '2026-01-06'),
+(7, 'Vijay Kumar', 'vijay@gmail.com', 'Chennai', 29, '2026-01-07'),
+(8, 'Divya Reddy', 'divya@gmail.com', 'Hyderabad', 21, '2026-01-08'),
+(9, 'Suresh Babu', 'suresh@gmail.com', 'Mysore', 28, '2026-01-09'),
+(10, 'Meena Devi', 'meena@gmail.com', 'Mumbai', 24, '2026-01-10'),
+(11, 'Ajay Patel', 'ajay@gmail.com', 'Pune', 30, '2026-01-11'),
+(12, 'Pooja Sharma', 'pooja@gmail.com', 'Delhi', 22, '2026-01-12'),
+(13, 'Ravi Teja', 'ravi@gmail.com', 'Bangalore', 25, '2026-01-13'),
+(14, 'Swathi Rani', 'swathi@gmail.com', 'Chennai', 23, '2026-01-14'),
+(15, 'Manoj Kumar', 'manoj@gmail.com', 'Hyderabad', 27, '2026-01-15');
+
+INSERT INTO sales VALUES
+(1, 1, 1, 1, 75000, 'UPI', '2026-02-01'),
+(2, 2, 2, 1, 65000, 'Card', '2026-02-02'),
+(3, 3, 3, 1, 55000, 'UPI', '2026-02-03'),
+(4, 4, 4, 2, 24000, 'Cash', '2026-02-04'),
+(5, 5, 5, 2, 5000, 'UPI', '2026-02-05'),
+(6, 6, 6, 1, 8000, 'Card', '2026-02-06'),
+(7, 7, 7, 1, 15000, 'UPI', '2026-02-07'),
+(8, 8, 8, 1, 35000, 'Cash', '2026-02-08'),
+(9, 9, 9, 3, 2400, 'UPI', '2026-02-09'),
+(10, 10, 10, 2, 3600, 'Card', '2026-02-10'),
+(11, 1, 11, 1, 3000, 'UPI', '2026-02-11'),
+(12, 2, 12, 1, 12000, 'Cash', '2026-02-12'),
+(13, 3, 13, 2, 9000, 'Card', '2026-02-13'),
+(14, 4, 14, 1, 5000, 'UPI', '2026-02-14'),
+(15, 5, 1, 1, 75000, 'Card', '2026-02-15'),
+(16, 6, 2, 1, 65000, 'UPI', '2026-02-16'),
+(17, 7, 5, 3, 7500, 'Cash', '2026-03-01'),
+(18, 8, 9, 2, 1600, 'UPI', '2026-03-02'),
+(19, 9, 11, 2, 6000, 'Card', '2026-03-03'),
+(20, 10, 3, 1, 55000, 'UPI', '2026-03-04'),
+(21, 11, 4, 1, 12000, 'Cash', '2026-03-05'),
+(22, 12, 6, 2, 16000, 'Card', '2026-03-06'),
+(23, 13, 12, 1, 12000, 'UPI', '2026-03-07'),
+(24, 14, 13, 1, 4500, 'Cash', '2026-03-08'),
+(25, 1, 1, 1, 75000, 'UPI', '2026-03-09');
+
+INSERT INTO products
+(product_id, product_name, category, price, stock_quantity)
+VALUES
+(16, 'USB Cable', 'Electronics', 500, 35);
+
+5.
+SELECT * FROM products;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+13	Winter Jacket	Clothing	4000.00	22	Fashion House	2025-02-15
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+6.
+SELECT * FROM customers;
+
+customer_id	customer_name	email	city	age	registration_date
+1	Arun Kumar	arun@gmail.com	Bangalore	24	2026-01-01
+2	Anjali Sharma	anjali@gmail.com	Chennai	25	2026-01-02
+3	Rahul Reddy	rahul@gmail.com	Mysore	22	2026-01-03
+4	Priya Singh	priya@gmail.com	Hyderabad	27	2026-01-04
+5	Kiran Kumar	kiran@gmail.com	Vijayawada	23	2026-01-05
+6	Sneha Rao	sneha@gmail.com	Bangalore	26	2026-01-06
+7	Vijay Kumar	vijay@gmail.com	Chennai	29	2026-01-07
+8	Divya Reddy	divya@gmail.com	Hyderabad	21	2026-01-08
+9	Suresh Babu	suresh@gmail.com	Mysore	28	2026-01-09
+10	Meena Devi	meena@gmail.com	Mumbai	24	2026-01-10
+11	Ajay Patel	ajay@gmail.com	Pune	30	2026-01-11
+12	Pooja Sharma	pooja@gmail.com	Delhi	22	2026-01-12
+13	Ravi Teja	ravi@gmail.com	Bangalore	25	2026-01-13
+14	Swathi Rani	swathi@gmail.com	Chennai	23	2026-01-14
+15	Manoj Kumar	manoj@gmail.com	Hyderabad	27	2026-01-15
+
+7.
+SELECT * FROM sales;
+
+sale_id	customer_id	product_id	quantity	total_amount	payment_mode	sale_date
+1	1	1	1	75000.00	UPI	2026-02-01
+2	2	2	1	65000.00	Card	2026-02-02
+3	3	3	1	55000.00	UPI	2026-02-03
+4	4	4	2	24000.00	Cash	2026-02-04
+5	5	5	2	5000.00	UPI	2026-02-05
+6	6	6	1	8000.00	Card	2026-02-06
+7	7	7	1	15000.00	UPI	2026-02-07
+8	8	8	1	35000.00	Cash	2026-02-08
+9	9	9	3	2400.00	UPI	2026-02-09
+10	10	10	2	3600.00	Card	2026-02-10
+11	1	11	1	3000.00	UPI	2026-02-11
+12	2	12	1	12000.00	Cash	2026-02-12
+13	3	13	2	9000.00	Card	2026-02-13
+14	4	14	1	5000.00	UPI	2026-02-14
+15	5	1	1	75000.00	Card	2026-02-15
+16	6	2	1	65000.00	UPI	2026-02-16
+17	7	5	3	7500.00	Cash	2026-03-01
+18	8	9	2	1600.00	UPI	2026-03-02
+19	9	11	2	6000.00	Card	2026-03-03
+20	10	3	1	55000.00	UPI	2026-03-04
+21	11	4	1	12000.00	Cash	2026-03-05
+22	12	6	2	16000.00	Card	2026-03-06
+23	13	12	1	12000.00	UPI	2026-03-07
+24	14	13	1	4500.00	Cash	2026-03-08
+25	1	1	1	75000.00	UPI	2026-03-09
+
+8.
+SELECT COUNT(*) FROM products;
+
+COUNT(*)
+16
+
+SELECT COUNT(*) FROM customers;
+
+COUNT(*)
+15
+
+SELECT COUNT(*) FROM sales;
+
+COUNT(*)
+25
+
+9.
+SELECT * FROM products;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+13	Winter Jacket	Clothing	4000.00	22	Fashion House	2025-02-15
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+10.
+SELECT product_name, price
+FROM products;
+
+product_name	price
+Samsung Galaxy Phone	25000.00
+Dell Laptop	55000.00
+Apple iPhone	75000.00
+Wooden Chair	2500.00
+Office Table	8000.00
+Cotton Shirt	1200.00
+Running Shoes	3500.00
+Smart Watch	12000.00
+Bluetooth Speaker	4500.00
+Leather Bag	2800.00
+Washing Machine	32000.00
+Study Table	6000.00
+Winter Jacket	4000.00
+Gaming Mouse	1800.00
+Water Bottle	500.00
+USB Cable	500.00
+
+11.
+SELECT DISTINCT category
+FROM products;
+
+category
+Electronics
+Furniture
+Clothing
+Footwear
+Accessories
+
+12.
+SELECT * FROM products
+WHERE price > 5000;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+
+13.
+SELECT * FROM products
+WHERE price < 2000;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+14.
+SELECT * FROM products
+WHERE category = 'Electronics';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+15.
+SELECT * FROM products
+WHERE stock_quantity < 10;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+
+16.
+SELECT * FROM products
+WHERE category = 'Electronics'
+AND price > 10000;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+
+17.
+SELECT * FROM products
+WHERE category = 'Electronics'
+OR category = 'Furniture';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+18.
+SELECT * FROM products
+WHERE NOT category = 'Clothing';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+19.
+SELECT * FROM products
+WHERE product_name LIKE 'S%';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+
+20.
+SELECT * FROM products
+WHERE product_name LIKE '%e';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+21.
+SELECT * FROM products
+WHERE product_name LIKE '%Phone%';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+
+22.
+SELECT * FROM customers
+WHERE customer_name LIKE 'A%';
+
+customer_id	customer_name	email	city	age	registration_date
+1	Arun Kumar	arun@gmail.com	Bangalore	24	2026-01-01
+2	Anjali Sharma	anjali@gmail.com	Chennai	25	2026-01-02
+11	Ajay Patel	ajay@gmail.com	Pune	30	2026-01-11
+
+23.
+SELECT * FROM customers
+WHERE city IN ('Bangalore', 'Chennai', 'Mysore');
+
+customer_id	customer_name	email	city	age	registration_date
+1	Arun Kumar	arun@gmail.com	Bangalore	24	2026-01-01
+2	Anjali Sharma	anjali@gmail.com	Chennai	25	2026-01-02
+3	Rahul Reddy	rahul@gmail.com	Mysore	22	2026-01-03
+6	Sneha Rao	sneha@gmail.com	Bangalore	26	2026-01-06
+7	Vijay Kumar	vijay@gmail.com	Chennai	29	2026-01-07
+9	Suresh Babu	suresh@gmail.com	Mysore	28	2026-01-09
+13	Ravi Teja	ravi@gmail.com	Bangalore	25	2026-01-13
+14	Swathi Rani	swathi@gmail.com	Chennai	23	2026-01-14
+
+24.
+SELECT * FROM products
+WHERE price BETWEEN 1000 AND 10000;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+13	Winter Jacket	Clothing	4000.00	22	Fashion House	2025-02-15
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+
+25.
+SELECT * FROM customers
+WHERE age BETWEEN 20 AND 30;
+
+customer_id	customer_name	email	city	age	registration_date
+1	Arun Kumar	arun@gmail.com	Bangalore	24	2026-01-01
+2	Anjali Sharma	anjali@gmail.com	Chennai	25	2026-01-02
+3	Rahul Reddy	rahul@gmail.com	Mysore	22	2026-01-03
+4	Priya Singh	priya@gmail.com	Hyderabad	27	2026-01-04
+5	Kiran Kumar	kiran@gmail.com	Vijayawada	23	2026-01-05
+6	Sneha Rao	sneha@gmail.com	Bangalore	26	2026-01-06
+7	Vijay Kumar	vijay@gmail.com	Chennai	29	2026-01-07
+8	Divya Reddy	divya@gmail.com	Hyderabad	21	2026-01-08
+9	Suresh Babu	suresh@gmail.com	Mysore	28	2026-01-09
+10	Meena Devi	meena@gmail.com	Mumbai	24	2026-01-10
+11	Ajay Patel	ajay@gmail.com	Pune	30	2026-01-11
+12	Pooja Sharma	pooja@gmail.com	Delhi	22	2026-01-12
+13	Ravi Teja	ravi@gmail.com	Bangalore	25	2026-01-13
+14	Swathi Rani	swathi@gmail.com	Chennai	23	2026-01-14
+15	Manoj Kumar	manoj@gmail.com	Hyderabad	27	2026-01-15
+
+26.
+SELECT * FROM products
+WHERE supplier LIKE '%Tech%';
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+
+27.
+SELECT * FROM products
+ORDER BY price ASC;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+13	Winter Jacket	Clothing	4000.00	22	Fashion House	2025-02-15
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+
+28.
+SELECT * FROM products
+ORDER BY price DESC;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+13	Winter Jacket	Clothing	4000.00	22	Fashion House	2025-02-15
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+
+29.
+SELECT * FROM products
+ORDER BY price DESC
+LIMIT 5;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+
+30.
+SELECT * FROM products
+ORDER BY price ASC
+LIMIT 5;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+
+31.
+SELECT * FROM customers
+ORDER BY customer_name ASC;
+
+customer_id	customer_name	email	city	age	registration_date
+11	Ajay Patel	ajay@gmail.com	Pune	30	2026-01-11
+2	Anjali Sharma	anjali@gmail.com	Chennai	25	2026-01-02
+1	Arun Kumar	arun@gmail.com	Bangalore	24	2026-01-01
+8	Divya Reddy	divya@gmail.com	Hyderabad	21	2026-01-08
+5	Kiran Kumar	kiran@gmail.com	Vijayawada	23	2026-01-05
+15	Manoj Kumar	manoj@gmail.com	Hyderabad	27	2026-01-15
+10	Meena Devi	meena@gmail.com	Mumbai	24	2026-01-10
+12	Pooja Sharma	pooja@gmail.com	Delhi	22	2026-01-12
+4	Priya Singh	priya@gmail.com	Hyderabad	27	2026-01-04
+3	Rahul Reddy	rahul@gmail.com	Mysore	22	2026-01-03
+13	Ravi Teja	ravi@gmail.com	Bangalore	25	2026-01-13
+6	Sneha Rao	sneha@gmail.com	Bangalore	26	2026-01-06
+9	Suresh Babu	suresh@gmail.com	Mysore	28	2026-01-09
+14	Swathi Rani	swathi@gmail.com	Chennai	23	2026-01-14
+7	Vijay Kumar	vijay@gmail.com	Chennai	29	2026-01-07
+
+32.
+SELECT * FROM sales
+ORDER BY sale_date DESC, sale_id DESC
+LIMIT 10;
+
+sale_id	customer_id	product_id	quantity	total_amount	payment_mode	sale_date
+25	1	1	1	75000.00	UPI	2026-03-09
+24	14	13	1	4500.00	Cash	2026-03-08
+23	13	12	1	12000.00	UPI	2026-03-07
+22	12	6	2	16000.00	Card	2026-03-06
+21	11	4	1	12000.00	Cash	2026-03-05
+20	10	3	1	55000.00	UPI	2026-03-04
+19	9	11	2	6000.00	Card	2026-03-03
+18	8	9	2	1600.00	UPI	2026-03-02
+17	7	5	3	7500.00	Cash	2026-03-01
+16	6	2	1	65000.00	UPI	2026-02-16
+
+33.
+SELECT * FROM products
+ORDER BY stock_quantity ASC;
+
+product_id	product_name	category	price	stock_quantity	supplier	created_date
+11	Washing Machine	Electronics	32000.00	5	LG Technologies	2025-02-10
+8	Smart Watch	Electronics	12000.00	6	Smart Tech	2025-02-01
+2	Dell Laptop	Electronics	55000.00	8	Dell Technologies	2025-01-12
+5	Office Table	Furniture	8000.00	12	Home Furniture	2025-01-20
+12	Study Table	Furniture	6000.00	14	Modern Furniture	2025-02-12
+3	Apple iPhone	Electronics	75000.00	15	Apple Tech	2025-01-15
+9	Bluetooth Speaker	Electronics	4500.00	18	Sony Tech	2025-02-05
+1	Samsung Galaxy Phone	Electronics	25000.00	20	Samsung Tech	2025-01-10
+13	Winter Jacket	Clothing	4000.00	22	Fashion House	2025-02-15
+7	Running Shoes	Footwear	3500.00	25	Nike Tech	2025-01-25
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture	2025-01-18
+14	Gaming Mouse	Electronics	1800.00	35	Logitech Tech	2025-02-18
+16	USB Cable	Electronics	500.00	35	NULL	NULL
+10	Leather Bag	Accessories	2800.00	40	Leather World	2025-02-08
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House	2025-01-22
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20
+
+34.
+UPDATE products
+SET price = 27000
+WHERE product_id = 1;
+
+UPDATE products
+SET price = price + (price * 0.10)
+WHERE category = 'Electronics';
+
+UPDATE products
+SET stock_quantity = 30
+WHERE product_id = 1;
+
+UPDATE customers
+SET city = 'Hyderabad'
+WHERE customer_id = 1;
+
+UPDATE customers
+SET email = 'akhil123@gmail.com'
+WHERE customer_id = 1;
+
+UPDATE sales
+SET payment_mode = 'Card'
+WHERE sale_id = 1;
+
+35.
+DELETE FROM products
+WHERE product_id = 16;
+
+SELECT * FROM sales
+WHERE customer_id = 15;
+
+(Empty set)
+
+DELETE FROM customers
+WHERE customer_id = 15;
+
+DELETE FROM sales
+WHERE sale_date < '2026-02-05';
+
+36.
+ALTER TABLE products
+ADD discount_percentage DECIMAL(5,2) DEFAULT 0;
+
+ALTER TABLE customers
+ADD mobile_number VARCHAR(15);
+
+ALTER TABLE products
+MODIFY supplier VARCHAR(150);
+
+ALTER TABLE products
+RENAME COLUMN created_date TO product_added_date;
+
+ALTER TABLE products
+ADD product_status VARCHAR(20) DEFAULT 'Available';
+
+ALTER TABLE products
+ADD temporary_notes VARCHAR(100);
+
+ALTER TABLE products
+DROP COLUMN temporary_notes;
+
+DESC products;
+
+Field	Type	Null	Key	Default	Extra
+product_id	int	NO	PRI	NULL	
+product_name	varchar(100)	NO		NULL	
+category	varchar(50)	NO		NULL	
+price	decimal(10,2)	NO		NULL	
+stock_quantity	int	YES		0	
+supplier	varchar(150)	YES		NULL	
+product_added_date	date	YES		NULL	
+discount_percentage	decimal(5,2)	YES		0.00	
+product_status	varchar(20)	YES		Available	
+
+DESC customers;
+
+Field	Type	Null	Key	Default	Extra
+customer_id	int	NO	PRI	NULL	
+customer_name	varchar(100)	NO		NULL	
+email	varchar(100)	NO	UNI	NULL	
+city	varchar(50)	YES		NULL	
+age	int	YES		NULL	
+registration_date	date	YES		NULL	
+mobile_number	varchar(15)	YES		NULL	
+
+DESC sales;
+
+Field	Type	Null	Key	Default	Extra
+sale_id	int	NO	PRI	NULL	
+customer_id	int	NO	MUL	NULL	
+product_id	int	NO	MUL	NULL	
+quantity	int	NO		NULL	
+total_amount	decimal(10,2)	NO		NULL	
+payment_mode	varchar(30)	YES		Cash	
+sale_date	date	YES		NULL	
+
+37.
+SELECT COUNT(*) AS total_products
+FROM products;
+
+total_products
+15
+
+SELECT COUNT(*) AS total_customers
+FROM customers;
+
+total_customers
+14
+
+SELECT COUNT(*) AS total_sales
+FROM sales;
+
+total_sales
+21
+
+38.
+SELECT SUM(total_amount) AS total_revenue
+FROM sales;
+
+total_revenue
+427600.00
+
+39.
+SELECT AVG(price) AS average_product_price
+FROM products;
+
+average_product_price
+17102.000000
+
+40.
+SELECT MAX(price) AS highest_price
+FROM products;
+
+highest_price
+82500.00
+
+41.
+SELECT MIN(price) AS lowest_price
+FROM products;
+
+lowest_price
+500.00
+
+42.
+SELECT MAX(total_amount) AS highest_sales_amount
+FROM sales;
+
+highest_sales_amount
+75000.00
+
+43.
+SELECT SUM(quantity) AS total_quantity_sold
+FROM sales;
+
+total_quantity_sold
+31
+
+44.
+SELECT AVG(total_amount) AS average_sales_value
+FROM sales;
+
+average_sales_value
+20361.904762
+
+45.
+SELECT category, COUNT(*) AS total_products
+FROM products
+GROUP BY category;
+
+category	total_products
+Electronics	7
+Furniture	3
+Clothing	2
+Footwear	1
+Accessories	2
+
+46.
+SELECT category, AVG(price) AS average_price
+FROM products
+GROUP BY category;
+
+category	average_price
+Electronics	32575.714286
+Furniture	5500.000000
+Clothing	2600.000000
+Footwear	3500.000000
+Accessories	1650.000000
+
+47.
+SELECT category, SUM(stock_quantity) AS total_stock
+FROM products
+GROUP BY category;
+
+category	total_stock
+Electronics	117
+Furniture	56
+Clothing	72
+Footwear	25
+Accessories	100
+
+48.
+SELECT p.category,
+       SUM(s.total_amount) AS total_revenue
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.category;
+
+category	total_revenue
+Furniture	48500.00
+Clothing	37500.00
+Footwear	15000.00
+Electronics	323000.00
+Accessories	3600.00
+
+49.
+SELECT payment_mode,
+       COUNT(*) AS total_transactions
+FROM sales
+GROUP BY payment_mode;
+
+payment_mode	total_transactions
+UPI	10
+Card	6
+Cash	5
+
+50.
+SELECT p.product_name,
+       SUM(s.quantity) AS total_quantity_sold
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.product_id, p.product_name;
+
+product_name	total_quantity_sold
+Office Table	5
+Cotton Shirt	3
+Running Shoes	1
+Smart Watch	1
+Bluetooth Speaker	5
+Leather Bag	2
+Washing Machine	3
+Study Table	2
+Winter Jacket	3
+Gaming Mouse	1
+Samsung Galaxy Phone	2
+Dell Laptop	1
+Apple iPhone	1
+Wooden Chair	1
+
+51.
+SELECT category,
+       COUNT(*) AS total_products
+FROM products
+GROUP BY category
+HAVING COUNT(*) > 3;
+
+category	total_products
+Electronics	7
+
+52.
+SELECT p.product_name,
+       SUM(s.quantity) AS total_sold
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.product_id, p.product_name
+HAVING SUM(s.quantity) > 5;
+
+(Empty set)
+
+53.
+SELECT payment_mode,
+       COUNT(*) AS total_transactions
+FROM sales
+GROUP BY payment_mode
+HAVING COUNT(*) > 5;
+
+payment_mode	total_transactions
+UPI	10
+Card	6
+
+54.
+SELECT
+    c.customer_name,
+    s.sale_id,
+    s.product_id,
+    s.quantity,
+    s.total_amount,
+    s.payment_mode,
+    s.sale_date
+FROM customers c
+INNER JOIN sales s
+ON c.customer_id = s.customer_id;
+
+customer_name	sale_id	product_id	quantity	total_amount	payment_mode	sale_date
+Arun Kumar	11	11	1	3000.00	UPI	2026-02-11
+Arun Kumar	25	1	1	75000.00	UPI	2026-03-09
+Anjali Sharma	12	12	1	12000.00	Cash	2026-02-12
+Rahul Reddy	13	13	2	9000.00	Card	2026-02-13
+Priya Singh	14	14	1	5000.00	UPI	2026-02-14
+Kiran Kumar	5	5	2	5000.00	UPI	2026-02-05
+Kiran Kumar	15	1	1	75000.00	Card	2026-02-15
+Sneha Rao	6	6	1	8000.00	Card	2026-02-06
+Sneha Rao	16	2	1	65000.00	UPI	2026-02-16
+Vijay Kumar	7	7	1	15000.00	UPI	2026-02-07
+Vijay Kumar	17	5	3	7500.00	Cash	2026-03-01
+Divya Reddy	8	8	1	35000.00	Cash	2026-02-08
+Divya Reddy	18	9	2	1600.00	UPI	2026-03-02
+Suresh Babu	9	9	3	2400.00	UPI	2026-02-09
+Suresh Babu	19	11	2	6000.00	Card	2026-03-03
+Meena Devi	10	10	2	3600.00	Card	2026-02-10
+Meena Devi	20	3	1	55000.00	UPI	2026-03-04
+Ajay Patel	21	4	1	12000.00	Cash	2026-03-05
+Pooja Sharma	22	6	2	16000.00	Card	2026-03-06
+Ravi Teja	23	12	1	12000.00	UPI	2026-03-07
+Swathi Rani	24	13	1	4500.00	Cash	2026-03-08
+
+55.
+SELECT
+    p.product_name,
+    s.quantity
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id;
+
+product_name	quantity
+Samsung Galaxy Phone	1
+Samsung Galaxy Phone	1
+Dell Laptop	1
+Apple iPhone	1
+Wooden Chair	1
+Office Table	2
+Office Table	3
+Cotton Shirt	1
+Cotton Shirt	2
+Running Shoes	1
+Smart Watch	1
+Bluetooth Speaker	3
+Bluetooth Speaker	2
+Leather Bag	2
+Washing Machine	1
+Washing Machine	2
+Study Table	1
+Study Table	1
+Winter Jacket	2
+Winter Jacket	1
+Gaming Mouse	1
+
+56.
+SELECT
+    c.customer_name,
+    p.product_name,
+    s.total_amount
+FROM sales s
+INNER JOIN customers c
+ON s.customer_id = c.customer_id
+INNER JOIN products p
+ON s.product_id = p.product_id;
+
+customer_name	product_name	total_amount
+Arun Kumar	Washing Machine	3000.00
+Arun Kumar	Samsung Galaxy Phone	75000.00
+Anjali Sharma	Study Table	12000.00
+Rahul Reddy	Winter Jacket	9000.00
+Priya Singh	Gaming Mouse	5000.00
+Kiran Kumar	Office Table	5000.00
+Kiran Kumar	Samsung Galaxy Phone	75000.00
+Sneha Rao	Cotton Shirt	8000.00
+Sneha Rao	Dell Laptop	65000.00
+Vijay Kumar	Running Shoes	15000.00
+Vijay Kumar	Office Table	7500.00
+Divya Reddy	Smart Watch	35000.00
+Divya Reddy	Bluetooth Speaker	1600.00
+Suresh Babu	Bluetooth Speaker	2400.00
+Suresh Babu	Washing Machine	6000.00
+Meena Devi	Leather Bag	3600.00
+Meena Devi	Apple iPhone	55000.00
+Ajay Patel	Wooden Chair	12000.00
+Pooja Sharma	Cotton Shirt	16000.00
+Ravi Teja	Study Table	12000.00
+Swathi Rani	Winter Jacket	4500.00
+
+57.
+SELECT
+    c.customer_name,
+    p.product_name
+FROM sales s
+INNER JOIN customers c
+ON s.customer_id = c.customer_id
+INNER JOIN products p
+ON s.product_id = p.product_id;
+
+customer_name	product_name
+Arun Kumar	Washing Machine
+Arun Kumar	Samsung Galaxy Phone
+Anjali Sharma	Study Table
+Rahul Reddy	Winter Jacket
+Priya Singh	Gaming Mouse
+Kiran Kumar	Office Table
+Kiran Kumar	Samsung Galaxy Phone
+Sneha Rao	Cotton Shirt
+Sneha Rao	Dell Laptop
+Vijay Kumar	Running Shoes
+Vijay Kumar	Office Table
+Divya Reddy	Smart Watch
+Divya Reddy	Bluetooth Speaker
+Suresh Babu	Bluetooth Speaker
+Suresh Babu	Washing Machine
+Meena Devi	Leather Bag
+Meena Devi	Apple iPhone
+Ajay Patel	Wooden Chair
+Pooja Sharma	Cotton Shirt
+Ravi Teja	Study Table
+Swathi Rani	Winter Jacket
+
+58.
+SELECT
+    c.customer_id,
+    c.customer_name,
+    s.sale_id,
+    s.total_amount
+FROM customers c
+LEFT JOIN sales s
+ON c.customer_id = s.customer_id;
+
+customer_id	customer_name	sale_id	total_amount
+1	Arun Kumar	11	3000.00
+1	Arun Kumar	25	75000.00
+2	Anjali Sharma	12	12000.00
+3	Rahul Reddy	13	9000.00
+4	Priya Singh	14	5000.00
+5	Kiran Kumar	5	5000.00
+5	Kiran Kumar	15	75000.00
+6	Sneha Rao	6	8000.00
+6	Sneha Rao	16	65000.00
+7	Vijay Kumar	7	15000.00
+7	Vijay Kumar	17	7500.00
+8	Divya Reddy	8	35000.00
+8	Divya Reddy	18	1600.00
+9	Suresh Babu	9	2400.00
+9	Suresh Babu	19	6000.00
+10	Meena Devi	10	3600.00
+10	Meena Devi	20	55000.00
+11	Ajay Patel	21	12000.00
+12	Pooja Sharma	22	16000.00
+13	Ravi Teja	23	12000.00
+14	Swathi Rani	24	4500.00
+
+59.
+SELECT
+    p.product_id,
+    p.product_name,
+    p.category,
+    s.sale_id,
+    s.quantity
+FROM products p
+LEFT JOIN sales s
+ON p.product_id = s.product_id;
+
+product_id	product_name	category	sale_id	quantity
+1	Samsung Galaxy Phone	Electronics	15	1
+1	Samsung Galaxy Phone	Electronics	25	1
+2	Dell Laptop	Electronics	16	1
+3	Apple iPhone	Electronics	20	1
+4	Wooden Chair	Furniture	21	1
+5	Office Table	Furniture	5	2
+5	Office Table	Furniture	17	3
+6	Cotton Shirt	Clothing	6	1
+6	Cotton Shirt	Clothing	22	2
+7	Running Shoes	Footwear	7	1
+8	Smart Watch	Electronics	8	1
+9	Bluetooth Speaker	Electronics	9	3
+9	Bluetooth Speaker	Electronics	18	2
+10	Leather Bag	Accessories	10	2
+11	Washing Machine	Electronics	11	1
+11	Washing Machine	Electronics	19	2
+12	Study Table	Furniture	12	1
+12	Study Table	Furniture	23	1
+13	Winter Jacket	Clothing	13	2
+13	Winter Jacket	Clothing	24	1
+14	Gaming Mouse	Electronics	14	1
+15	Water Bottle	Accessories	NULL	NULL
+
+60.
+SELECT
+    s.sale_id,
+    s.total_amount,
+    s.payment_mode,
+    c.customer_name,
+    c.city
+FROM sales s
+RIGHT JOIN customers c
+ON s.customer_id = c.customer_id;
+
+sale_id	total_amount	payment_mode	customer_name	city
+11	3000.00	UPI	Arun Kumar	Hyderabad
+25	75000.00	UPI	Arun Kumar	Hyderabad
+12	12000.00	Cash	Anjali Sharma	Chennai
+13	9000.00	Card	Rahul Reddy	Mysore
+14	5000.00	UPI	Priya Singh	Hyderabad
+5	5000.00	UPI	Kiran Kumar	Vijayawada
+15	75000.00	Card	Kiran Kumar	Vijayawada
+6	8000.00	Card	Sneha Rao	Bangalore
+16	65000.00	UPI	Sneha Rao	Bangalore
+7	15000.00	UPI	Vijay Kumar	Chennai
+17	7500.00	Cash	Vijay Kumar	Chennai
+8	35000.00	Cash	Divya Reddy	Hyderabad
+18	1600.00	UPI	Divya Reddy	Hyderabad
+9	2400.00	UPI	Suresh Babu	Mysore
+19	6000.00	Card	Suresh Babu	Mysore
+10	3600.00	Card	Meena Devi	Mumbai
+20	55000.00	UPI	Meena Devi	Mumbai
+21	12000.00	Cash	Ajay Patel	Pune
+22	16000.00	Card	Pooja Sharma	Delhi
+23	12000.00	UPI	Ravi Teja	Bangalore
+24	4500.00	Cash	Swathi Rani	Chennai
+
+61.
+SELECT
+    s.sale_id,
+    c.customer_name,
+    p.product_name,
+    p.category,
+    s.quantity,
+    s.payment_mode,
+    s.total_amount,
+    s.sale_date
+FROM sales s
+INNER JOIN customers c
+ON s.customer_id = c.customer_id
+INNER JOIN products p
+ON s.product_id = p.product_id
+ORDER BY s.sale_date;
+
+sale_id	customer_name	product_name	category	quantity	payment_mode	total_amount	sale_date
+5	Kiran Kumar	Office Table	Furniture	2	UPI	5000.00	2026-02-05
+6	Sneha Rao	Cotton Shirt	Clothing	1	Card	8000.00	2026-02-06
+7	Vijay Kumar	Running Shoes	Footwear	1	UPI	15000.00	2026-02-07
+8	Divya Reddy	Smart Watch	Electronics	1	Cash	35000.00	2026-02-08
+9	Suresh Babu	Bluetooth Speaker	Electronics	3	UPI	2400.00	2026-02-09
+10	Meena Devi	Leather Bag	Accessories	2	Card	3600.00	2026-02-10
+11	Arun Kumar	Washing Machine	Electronics	1	UPI	3000.00	2026-02-11
+12	Anjali Sharma	Study Table	Furniture	1	Cash	12000.00	2026-02-12
+13	Rahul Reddy	Winter Jacket	Clothing	2	Card	9000.00	2026-02-13
+14	Priya Singh	Gaming Mouse	Electronics	1	UPI	5000.00	2026-02-14
+15	Kiran Kumar	Samsung Galaxy Phone	Electronics	1	Card	75000.00	2026-02-15
+16	Sneha Rao	Dell Laptop	Electronics	1	UPI	65000.00	2026-02-16
+17	Vijay Kumar	Office Table	Furniture	3	Cash	7500.00	2026-03-01
+18	Divya Reddy	Bluetooth Speaker	Electronics	2	UPI	1600.00	2026-03-02
+19	Suresh Babu	Washing Machine	Electronics	2	Card	6000.00	2026-03-03
+20	Meena Devi	Apple iPhone	Electronics	1	UPI	55000.00	2026-03-04
+21	Ajay Patel	Wooden Chair	Furniture	1	Cash	12000.00	2026-03-05
+22	Pooja Sharma	Cotton Shirt	Clothing	2	Card	16000.00	2026-03-06
+23	Ravi Teja	Study Table	Furniture	1	UPI	12000.00	2026-03-07
+24	Swathi Rani	Winter Jacket	Clothing	1	Cash	4500.00	2026-03-08
+25	Arun Kumar	Samsung Galaxy Phone	Electronics	1	UPI	75000.00	2026-03-09
+
+62.
+SELECT
+    product_id,
+    product_name,
+    category,
+    price,
+    stock_quantity,
+    supplier
+FROM products;
+
+product_id	product_name	category	price	stock_quantity	supplier
+1	Samsung Galaxy Phone	Electronics	29700.00	30	Samsung Tech
+2	Dell Laptop	Electronics	60500.00	8	Dell Technologies
+3	Apple iPhone	Electronics	82500.00	15	Apple Tech
+4	Wooden Chair	Furniture	2500.00	30	Modern Furniture
+5	Office Table	Furniture	8000.00	12	Home Furniture
+6	Cotton Shirt	Clothing	1200.00	50	Fashion House
+7	Running Shoes	Footwear	3500.00	25	Nike Tech
+8	Smart Watch	Electronics	13200.00	6	Smart Tech
+9	Bluetooth Speaker	Electronics	4950.00	18	Sony Tech
+10	Leather Bag	Accessories	2800.00	40	Leather World
+11	Washing Machine	Electronics	35200.00	5	LG Technologies
+12	Study Table	Furniture	6000.00	14	Modern Furniture
+13	Winter Jacket	Clothing	4000.00	22	Fashion House
+14	Gaming Mouse	Electronics	1980.00	35	Logitech Tech
+15	Water Bottle	Accessories	500.00	60	Aqua Products
+
+63.
+SELECT *
+FROM products
+WHERE stock_quantity < 10;
+
+product_id	product_name	category	price	stock_quantity	supplier	product_added_date	discount_percentage	product_status
+2	Dell Laptop	Electronics	60500.00	8	Dell Technologies	2025-01-12	0.00	Available
+8	Smart Watch	Electronics	13200.00	6	Smart Tech	2025-02-01	0.00	Available
+11	Washing Machine	Electronics	35200.00	5	LG Technologies	2025-02-10	0.00	Available
+
+64.
+SELECT
+    category,
+    COUNT(*) AS total_products
+FROM products
+GROUP BY category;
+
+category	total_products
+Electronics	7
+Furniture	3
+Clothing	2
+Footwear	1
+Accessories	2
+
+65.
+SELECT *
+FROM products
+WHERE price = (SELECT MAX(price) FROM products)
+   OR price = (SELECT MIN(price) FROM products);
+
+product_id	product_name	category	price	stock_quantity	supplier	product_added_date	discount_percentage	product_status
+3	Apple iPhone	Electronics	82500.00	15	Apple Tech	2025-01-15	0.00	Available
+15	Water Bottle	Accessories	500.00	60	Aqua Products	2025-02-20	0.00	Available
+
+66.
+SELECT *
+FROM customers
+ORDER BY customer_name;
+
+customer_id	customer_name	email	city	age	registration_date	mobile_number
+11	Ajay Patel	ajay@gmail.com	Pune	30	2026-01-11	NULL
+2	Anjali Sharma	anjali@gmail.com	Chennai	25	2026-01-02	NULL
+1	Arun Kumar	akhil123@gmail.com	Hyderabad	24	2026-01-01	NULL
+8	Divya Reddy	divya@gmail.com	Hyderabad	21	2026-01-08	NULL
+5	Kiran Kumar	kiran@gmail.com	Vijayawada	23	2026-01-05	NULL
+10	Meena Devi	meena@gmail.com	Mumbai	24	2026-01-10	NULL
+12	Pooja Sharma	pooja@gmail.com	Delhi	22	2026-01-12	NULL
+4	Priya Singh	priya@gmail.com	Hyderabad	27	2026-01-04	NULL
+3	Rahul Reddy	rahul@gmail.com	Mysore	22	2026-01-03	NULL
+13	Ravi Teja	ravi@gmail.com	Bangalore	25	2026-01-13	NULL
+6	Sneha Rao	sneha@gmail.com	Bangalore	26	2026-01-06	NULL
+9	Suresh Babu	suresh@gmail.com	Mysore	28	2026-01-09	NULL
+14	Swathi Rani	swathi@gmail.com	Chennai	23	2026-01-14	NULL
+7	Vijay Kumar	vijay@gmail.com	Chennai	29	2026-01-07	NULL
+
+67.
+SELECT
+    s.sale_id,
+    c.customer_name,
+    p.product_name,
+    s.quantity,
+    s.total_amount,
+    s.payment_mode,
+    s.sale_date
+FROM sales s
+INNER JOIN customers c
+ON s.customer_id = c.customer_id
+INNER JOIN products p
+ON s.product_id = p.product_id;
+
+sale_id	customer_name	product_name	quantity	total_amount	payment_mode	sale_date
+11	Arun Kumar	Washing Machine	1	3000.00	UPI	2026-02-11
+25	Arun Kumar	Samsung Galaxy Phone	1	75000.00	UPI	2026-03-09
+12	Anjali Sharma	Study Table	1	12000.00	Cash	2026-02-12
+13	Rahul Reddy	Winter Jacket	2	9000.00	Card	2026-02-13
+14	Priya Singh	Gaming Mouse	1	5000.00	UPI	2026-02-14
+5	Kiran Kumar	Office Table	2	5000.00	UPI	2026-02-05
+15	Kiran Kumar	Samsung Galaxy Phone	1	75000.00	Card	2026-02-15
+6	Sneha Rao	Cotton Shirt	1	8000.00	Card	2026-02-06
+16	Sneha Rao	Dell Laptop	1	65000.00	UPI	2026-02-16
+7	Vijay Kumar	Running Shoes	1	15000.00	UPI	2026-02-07
+17	Vijay Kumar	Office Table	3	7500.00	Cash	2026-03-01
+8	Divya Reddy	Smart Watch	1	35000.00	Cash	2026-02-08
+18	Divya Reddy	Bluetooth Speaker	2	1600.00	UPI	2026-03-02
+9	Suresh Babu	Bluetooth Speaker	3	2400.00	UPI	2026-02-09
+19	Suresh Babu	Washing Machine	2	6000.00	Card	2026-03-03
+10	Meena Devi	Leather Bag	2	3600.00	Card	2026-02-10
+20	Meena Devi	Apple iPhone	1	55000.00	UPI	2026-03-04
+21	Ajay Patel	Wooden Chair	1	12000.00	Cash	2026-03-05
+22	Pooja Sharma	Cotton Shirt	2	16000.00	Card	2026-03-06
+23	Ravi Teja	Study Table	1	12000.00	UPI	2026-03-07
+24	Swathi Rani	Winter Jacket	1	4500.00	Cash	2026-03-08
+
+68.
+SELECT
+    SUM(total_amount) AS total_revenue
+FROM sales;
+
+total_revenue
+427600.00
+
+69.
+SELECT
+    payment_mode,
+    COUNT(*) AS total_transactions,
+    SUM(total_amount) AS total_revenue
+FROM sales
+GROUP BY payment_mode;
+
+payment_mode	total_transactions	total_revenue
+UPI	10	239000.00
+Card	6	117600.00
+Cash	5	71000.00
+
+70.
+SELECT
+    p.product_name,
+    SUM(s.quantity) AS total_quantity_sold
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY total_quantity_sold DESC;
+
+product_name	total_quantity_sold
+Office Table	5
+Bluetooth Speaker	5
+Cotton Shirt	3
+Washing Machine	3
+Winter Jacket	3
+Samsung Galaxy Phone	2
+Leather Bag	2
+Study Table	2
+Dell Laptop	1
+Apple iPhone	1
+Wooden Chair	1
+Running Shoes	1
+Smart Watch	1
+Gaming Mouse	1
+
+71.
+SELECT
+    c.customer_id,
+    c.customer_name,
+    COUNT(s.sale_id) AS total_transactions,
+    COALESCE(SUM(s.total_amount), 0) AS total_purchase_amount
+FROM customers c
+LEFT JOIN sales s
+ON c.customer_id = s.customer_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY total_purchase_amount DESC;
+
+customer_id	customer_name	total_transactions	total_purchase_amount
+5	Kiran Kumar	2	80000.00
+1	Arun Kumar	2	78000.00
+6	Sneha Rao	2	73000.00
+10	Meena Devi	2	58600.00
+8	Divya Reddy	2	36600.00
+7	Vijay Kumar	2	22500.00
+12	Pooja Sharma	1	16000.00
+2	Anjali Sharma	1	12000.00
+11	Ajay Patel	1	12000.00
+13	Ravi Teja	1	12000.00
+3	Rahul Reddy	1	9000.00
+9	Suresh Babu	2	8400.00
+4	Priya Singh	1	5000.00
+14	Swathi Rani	1	4500.00
+
+72.
+SELECT
+    p.product_name,
+    SUM(s.total_amount) AS total_revenue
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY total_revenue DESC
+LIMIT 1;
+
+product_name	total_revenue
+Samsung Galaxy Phone	150000.00
+
+73.
+SELECT
+    c.customer_name,
+    SUM(s.total_amount) AS total_purchase
+FROM customers c
+INNER JOIN sales s
+ON c.customer_id = s.customer_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY total_purchase DESC
+LIMIT 1;
+
+customer_name	total_purchase
+Kiran Kumar	80000.00
+
+74.
+SELECT
+    p.product_id,
+    p.product_name
+FROM products p
+LEFT JOIN sales s
+ON p.product_id = s.product_id
+WHERE s.sale_id IS NULL;
+
+product_id	product_name
+15	Water Bottle
+
+75.
+SELECT
+    c.customer_id,
+    c.customer_name
+FROM customers c
+LEFT JOIN sales s
+ON c.customer_id = s.customer_id
+WHERE s.sale_id IS NULL;
+
+(Empty set)
+
+76.
+SELECT
+    p.category,
+    SUM(s.total_amount) AS total_revenue
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.category
+ORDER BY total_revenue DESC
+LIMIT 1;
+
+category	total_revenue
+Electronics	323000.00
+
+77.
+SELECT *
+FROM products
+WHERE stock_quantity < 5;
+
+(Empty set)
+
+78.
+SELECT
+    payment_mode,
+    SUM(total_amount) AS total_revenue
+FROM sales
+GROUP BY payment_mode;
+
+payment_mode	total_revenue
+UPI	239000.00
+Card	117600.00
+Cash	71000.00
+
+79.
+SELECT
+    p.product_name,
+    SUM(s.quantity) AS total_quantity_sold
+FROM products p
+INNER JOIN sales s
+ON p.product_id = s.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY total_quantity_sold DESC
+LIMIT 5;
+
+product_name	total_quantity_sold
+Bluetooth Speaker	5
+Office Table	5
+Winter Jacket	3
+Washing Machine	3
+Cotton Shirt	3
+
+80.
+SELECT
+    c.customer_name,
+    COUNT(DISTINCT s.product_id) AS different_products
+FROM customers c
+INNER JOIN sales s
+ON c.customer_id = s.customer_id
+GROUP BY c.customer_id, c.customer_name
+HAVING COUNT(DISTINCT s.product_id) > 1;
+
+customer_name	different_products
+Arun Kumar	2
+Kiran Kumar	2
+Sneha Rao	2
+Vijay Kumar	2
+Divya Reddy	2
+Suresh Babu	2
+Meena Devi	2
+
+81.
+SELECT
+    YEAR(sale_date) AS sales_year,
+    MONTH(sale_date) AS sales_month,
+    COUNT(*) AS total_transactions,
+    SUM(quantity) AS total_quantity_sold,
+    SUM(total_amount) AS monthly_revenue
+FROM sales
+GROUP BY YEAR(sale_date), MONTH(sale_date)
+ORDER BY sales_year, sales_month;
+
+sales_year	sales_month	total_transactions	total_quantity_sold	monthly_revenue
+2026	2	12	17	238000.00
+2026	3	9	14	189600.00
+```[cite: 1]
